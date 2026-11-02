@@ -147,7 +147,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <DockPanel Grid.Row="0">
+            <DockPanel Grid.Row="0" LastChildFill="False">
                 <StackPanel>
                     <TextBlock Text="TRUNG TÂM ĐIỀU KHIỂN" Style="{StaticResource Eyebrow}"/>
                     <TextBlock Text="Tổng quan thiết bị" FontSize="26" FontWeight="Bold" Margin="0,5,0,3"/>
@@ -216,7 +216,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <DockPanel>
+                        <DockPanel LastChildFill="False">
                             <StackPanel>
                                 <TextBlock Text="Checklist bàn giao" FontSize="16" FontWeight="Bold"/>
                                 <TextBlock Text="Kỹ thuật viên xác nhận từng hạng mục sau khi kiểm tra."
@@ -231,7 +231,7 @@
                         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                             <StackPanel x:Name="ChecklistPanel" Margin="0,2,4,0"/>
                         </ScrollViewer>
-                        <DockPanel Grid.Row="3" Margin="0,11,0,0">
+                        <DockPanel Grid.Row="3" Margin="0,11,0,0" LastChildFill="False">
                             <TextBlock Text="Tiến độ được lưu trên máy này." Foreground="{StaticResource Muted}"
                                        FontSize="9" VerticalAlignment="Center"/>
                             <Button Content="Lưu tiến độ" DockPanel.Dock="Right" Click="Save_Click" Padding="15,9"/>
@@ -276,7 +276,7 @@
                 </StackPanel>
             </Grid>
 
-            <DockPanel Grid.Row="6">
+            <DockPanel Grid.Row="6" LastChildFill="False">
                 <TextBlock Text="LÀM 1 CHẠM  •  QUẢN LÝ THIẾT LẬP LAPTOP"
                            Foreground="{StaticResource Muted}" FontSize="9" VerticalAlignment="Center"/>
                 <TextBlock Text=".NET 10  |  WPF" Foreground="{StaticResource Muted}"
