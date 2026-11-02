@@ -255,6 +255,16 @@
                         </StackPanel>
                     </Border>
 
+                    <Border Style="{StaticResource Card}" Margin="0,15,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Cài phần mềm thiết yếu" FontSize="14" FontWeight="Bold"/>
+                            <TextBlock Text="Cài bằng winget, mỗi ứng dụng đều cần bạn xác nhận."
+                                       Foreground="{StaticResource Muted}" FontSize="9" Margin="0,4,0,12"
+                                       TextWrapping="Wrap"/>
+                            <StackPanel x:Name="SoftwarePanel"/>
+                        </StackPanel>
+                    </Border>
+
                     <Border Background="{StaticResource SoftBlue}" CornerRadius="13" Padding="17" Margin="0,15,0,0">
                         <StackPanel>
                             <TextBlock Text="LƯU Ý AN TOÀN" Foreground="{StaticResource Accent}" FontSize="9" FontWeight="Bold"/>
