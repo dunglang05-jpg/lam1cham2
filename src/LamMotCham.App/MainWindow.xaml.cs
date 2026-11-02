@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     private readonly List<(string Id, CheckBox CheckBox)> _checks = [];
     private readonly IDeviceInfoProvider _deviceInfo = new WindowsDeviceInfoProvider();
     private readonly IChecklistStore _store = new JsonChecklistStore();
+    private readonly WingetInstaller _installer = new();
 
     public MainWindow()
     {
@@ -23,6 +24,66 @@ public partial class MainWindow : Window
             ChecklistPanel.Children.Add(check); _checks.Add((item.Id, check));
         }
         UpdateProgress();
+        BuildSoftwareCatalog();
+    }
+
+    private void BuildSoftwareCatalog()
+    {
+        foreach (var package in WingetInstaller.Catalog)
+        {
+            var row = new Grid { Margin = new Thickness(0, 0, 0, 8) };
+            row.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            row.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            var details = new StackPanel { VerticalAlignment = VerticalAlignment.Center };
+            details.Children.Add(new TextBlock { Text = package.Name, FontWeight = FontWeights.SemiBold, FontSize = 11, Foreground = (Brush)FindResource("Ink") });
+            details.Children.Add(new TextBlock { Text = package.Description, FontSize = 9, Foreground = (Brush)FindResource("Muted"), Margin = new Thickness(0, 2, 8, 0) });
+            var installButton = new Button { Content = "Cài đặt", Padding = new Thickness(10, 7, 10, 7), FontSize = 10, Tag = package };
+            installButton.Click += InstallSoftware_Click;
+            Grid.SetColumn(installButton, 1);
+            row.Children.Add(details);
+            row.Children.Add(installButton);
+            SoftwarePanel.Children.Add(row);
+        }
+    }
+
+    private async void InstallSoftware_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button button || button.Tag is not SoftwarePackage package)
+            return;
+
+        var answer = MessageBox.Show(
+            $"Bạn muốn cài {package.Name} bằng Windows Package Manager (winget)?\n\nỨng dụng sẽ được tải từ nguồn winget đã cấu hình trên máy.",
+            "Xác nhận cài đặt",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+        if (answer != MessageBoxResult.Yes)
+            return;
+
+        button.IsEnabled = false;
+        button.Content = "Đang cài...";
+        try
+        {
+            StatusText.Text = $"Đang kiểm tra winget để cài {package.Name}...";
+            if (!await _installer.IsAvailableAsync())
+            {
+                StatusText.Text = "Máy chưa có winget. Hãy cập nhật App Installer từ Microsoft Store rồi thử lại.";
+                return;
+            }
+
+            var result = await _installer.InstallAsync(package);
+            StatusText.Text = result.Success
+                ? $"Đã cài đặt {package.Name} thành công."
+                : $"Cài {package.Name} chưa thành công (mã {result.ExitCode}). {result.Output}";
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Không thể cài {package.Name}: {ex.Message}";
+        }
+        finally
+        {
+            button.IsEnabled = true;
+            button.Content = "Cài đặt";
+        }
     }
 
     private void UpdateProgress()
