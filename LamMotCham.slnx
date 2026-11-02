@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LamMotCham.App/LamMotCham.App.csproj" />
+    <Project Path="src/LamMotCham.Application/LamMotCham.Application.csproj" />
+    <Project Path="src/LamMotCham.Domain/LamMotCham.Domain.csproj" />
+    <Project Path="src/LamMotCham.Infrastructure.Windows/LamMotCham.Infrastructure.Windows.csproj" />
+  </Folder>
+</Solution>
